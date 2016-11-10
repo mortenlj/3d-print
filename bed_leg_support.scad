@@ -28,7 +28,9 @@ difference() {
 
 // Tower
 difference() {
-    cylinder(height, width/2, width/2);
+    translate([0, 0, width+base_height])
+        rotate([90, 0, 0])
+            cube([width, height, width], center=true);
     translate([0, 0, base_height])
         cylinder(height, leg_r, leg_r);
     translate([-width/2-1, 0, height/2])
