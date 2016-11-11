@@ -10,7 +10,7 @@ rotate(a=90, v=[1, 0, 0])
         };
         translate([0,-5,0])
             cube([500, 10, 500], true);
-        translate([0, 5, 0])
+        translate([0, 5.5, 0])
             cube([171, 6, 171], true);
         translate([40, 0, 40])
             cube([75, 10, 75], true);

@@ -1,4 +1,4 @@
 
 use <clip.scad>
 
-clip(10, 10, rotate=90);
+clip(0, 0, rotate=90);
