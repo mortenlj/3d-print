@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8
+
+import argparse
+import os
+import subprocess
+
+
+def valid_scad(fname):
+    return fname.endswith(".scad")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("target", help="Target directory to write rendered files")
+    parser.add_argument("scad", nargs="+", help="SCAD files to render")
+    args = parser.parse_args()
+
+    for fname in args.scad:
+        if not valid_scad(fname):
+            print("Not a SCAD-file: {}".format(fname))
+        render_file(args.target, fname)
+
+
+def change_ext(fname, new_ext):
+    name, ext = os.path.splitext(os.path.basename(fname))
+    return name + new_ext
+
+
+def render_file(target, scad_file):
+    stl_file = os.path.join(target, change_ext(scad_file, ".stl"))
+    subprocess.check_call(["openscad", "-o", stl_file, scad_file])
+    gcode_file = os.path.join(target, change_ext(scad_file, ".gcode"))
+    subprocess.check_call(["cura", "-s", "-o", gcode_file, stl_file])
+
+if __name__ == "__main__":
+    main()
