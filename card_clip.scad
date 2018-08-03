@@ -16,8 +16,8 @@ module main() {
         translate([0,0,-1])
             resize([20,5,12]) 
                 oval();
-        translate([0,3.4,5])
-            rotate(-10) 
+        translate([0,3,5])
+            rotate(10) 
                 cube([16,0.8,12], center=true);
     }
 }
