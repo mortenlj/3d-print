@@ -3,6 +3,11 @@ $fs = 1;
 $fa = 1;
 
 wall = 2.5;
+dupont = 2.54;
+
+case_x = 60;
+case_y = 80;
+case_z = 20;
 
 module Prism(l, w, h){
     rotate([90,0,0])
@@ -42,20 +47,28 @@ module Lid(interior_x, interior_y) {
 }
 
 module HuzzahMounts() {
-    dupont = 2.54;
     long_side = 38.1;
     short_side = 25.4;
     for(x=[-1,1], y=[-1,1])
         translate([long_side*x/2-dupont*x, short_side*y/2-dupont*y, 0]) 
-            cylinder(h=3, r=2, center=true);
+            cylinder(h=dupont, r=2, center=true);
+}
+
+module DHT22PinHoles(interior_y) {
+    for(x=[-1.5,-0.5,0.5,1.5])
+        translate([x*dupont, interior_y/2, 0])
+            cube([1, wall*2, 1], center=true);
 }
 
 // The box
-Case(50, 62, 20);
+difference() {
+    Case(case_x, case_y, case_z);
+    DHT22PinHoles(case_y);
+}
 translate([0,0,100])
-    Lid(50, 62);
+    Lid(case_x, case_y);
 
 
 // The mounts
-translate([0,36/2,-11+wall]) 
+translate([0,case_y/4,-case_z/2+wall]) 
     HuzzahMounts();
