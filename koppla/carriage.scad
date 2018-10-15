@@ -27,7 +27,7 @@ difference() {
 pylon_height = diameter/3;
 for(x=[-1,1], y=[-1,1]) {
     translate([x*relay_screw_distance_x/2, 
-               y*relay_screw_distance_y/2+(relay_y-carriage_length)/2+wall, 
+               y*relay_screw_distance_y/2+(relay_y-carriage_length)/2+2*wall, 
                -diameter/2+pylon_height/2+wall*1])
         difference() {
             cylinder(h=pylon_height, r=screw_hole_diameter/2, center=true);
