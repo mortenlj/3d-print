@@ -8,8 +8,8 @@ screw_hole_diameter = 2.5;
 carriage_length = height - h_overlap;
 
 // Testing -->
-// difference() {
-//     union() {
+difference() {
+    union() {
 // --> Testing
 
 // Carriage
@@ -17,9 +17,16 @@ difference() {
     rotate([90, 0, 0])
         difference() {
             Block(width, carriage_length, diameter);
-            Block(width-wall*2, height, diameter-wall*2);
+            intersection() {
+                Block(width-wall*2, height, diameter-wall*2);
+                cube([width-wall*5, diameter-wall*3, height], center=true);
+            }
             translate([0, diameter/2+wall*3, 0])
                 cube([width, diameter, height], center=true);
+            for(x=[-1,1]) {
+                translate([x*(width/2-wall*1.25), 0, 0])
+                    cylinder(h=height, r=1.5, center=true);
+            }
         }
 }
 
@@ -37,13 +44,11 @@ for(x=[-1,1], y=[-1,1]) {
         }
 }
 
-// Extend bottom
-translate([0, 0, -diameter/2+wall])
-    cube([35.3, carriage_length, wall], center=true);
-
 // Testing -->
-//     }
-//     translate([0, 10, 0])
-//         cube([width*2, carriage_length, diameter*2], center=true);
-// }
+    }
+    if (testing) {
+        translate([0, 10, 0])
+            cube([width*2, carriage_length, diameter*2], center=true);
+    }
+}
 // --> Testing

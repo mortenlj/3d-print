@@ -1,7 +1,9 @@
-$fs = 0.05;
-$fa = 0.2;
-// $fs = 1;
-// $fa = 1;
+// Control
+preview = true;
+testing = false;
+
+$fs = preview ? 1 : 0.05;
+$fa = preview ? 1 : 0.2;
 
 wall = 2;
 diameter = 24.5;
