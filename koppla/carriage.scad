@@ -1,12 +1,5 @@
 include <lib.scad>
 
-relay_screw_distance_x = 20.55;
-relay_screw_distance_y = 44.4;
-relay_y = h_relay;
-relay_x = 26;
-screw_hole_diameter = 2;
-board_screw_distance_x = 20;
-board_screw_distance_y = h_board - 2*2.8;
 carriage_length = case_height - h_overlap - lid_height;
 
 // Testing -->
@@ -30,38 +23,6 @@ difference() {
                     cylinder(h=case_height, r=1.5, center=true);
             }
         }
-}
-
-// Pylons for relay attachment
-if (h_relay > 0) {
-    pylon_height = koppla_diameter/3;
-    for(x=[-1,1], y=[-1,1]) {
-        translate([x*relay_screw_distance_x/2, 
-                y*relay_screw_distance_y/2+(relay_y-carriage_length)/2+2*wall, 
-                -koppla_diameter/2+pylon_height/2+wall*1])
-            difference() {
-                cylinder(h=pylon_height, r=screw_hole_diameter/2, center=true);
-                translate([0, 0, pylon_height/2-wall])
-                    rotate([90, 90,0])
-                        cylinder(h=screw_hole_diameter, r=0.7, center=true);
-            }
-    }
-}
-
-// Pylons for board attachment
-pylon_height = koppla_diameter/3;
-for(x=[-1,1], y=[-1,1]) {
-    if (len(search((1+x)*10+(1+y), enabled_pylons)) > 0) {
-        translate([x*board_screw_distance_x/2, 
-                y*board_screw_distance_y/2+(carriage_length/2-board_screw_distance_y/2-h_buffer_bottom-wall), 
-                -koppla_diameter/2+pylon_height/2+wall*1])
-            difference() {
-                cylinder(h=pylon_height, r=screw_hole_diameter/2, center=true);
-                translate([0, 0, pylon_height/2-wall])
-                    rotate([90, 90,0])
-                        cylinder(h=screw_hole_diameter, r=0.7, center=true);
-            }
-    }
 }
 
 // Testing -->

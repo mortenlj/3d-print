@@ -20,7 +20,6 @@ euplug_diameter = 13.7;
 
 lid_height = 10;
 
-h_relay = 0;
 h_board = 34;
 h_buffer_top = 25;
 h_buffer_bottom = 15;
@@ -29,7 +28,7 @@ h_overlap = euplug_width*0.75;
 
 enabled_pylons = [2, 20];
 
-case_height = lid_height+h_buffer+h_relay+h_board+h_overlap+wall*2;
+case_height = lid_height+h_buffer+h_board+h_overlap+wall*2;
 
 module Block(w, h, d) {
     hull() {
