@@ -2,10 +2,10 @@ include <lib.scad>
 
 carriage_length = case_height - h_overlap - lid_height;
 mount_height = 6;
+edge_width = 0.4;
+edge_height = 1;
 
 module Mount(length) {
-    edge_width = 0.4;
-    edge_height = 1;
     union() {
         cube([wall, length, mount_height]);
         translate([0, 0, mount_height-edge_height])
@@ -39,13 +39,14 @@ difference() {
 // Mounts
 end_mount_length = 2*wemos_width/3;
 side_mount_length = 2*wemos_length/3;
+board_width = wemos_width + edge_width/2;
 
 translate([end_mount_length/2, -carriage_length/2+h_buffer_lid, -payload_diameter/2])
     rotate([0, 0, 90])
         Mount(end_mount_length);
-translate([-wemos_width/2-wall, -carriage_length/2+h_buffer_lid+side_mount_length/3, -payload_diameter/2])
+translate([-board_width/2-wall, -carriage_length/2+h_buffer_lid+side_mount_length/3, -payload_diameter/2])
     Mount(side_mount_length);
-translate([wemos_width/2+wall, -carriage_length/2+h_buffer_lid+side_mount_length/3+side_mount_length, -payload_diameter/2])
+translate([board_width/2+wall, -carriage_length/2+h_buffer_lid+side_mount_length/3+side_mount_length, -payload_diameter/2])
     rotate([0, 0, 180])
         Mount(side_mount_length);
 
