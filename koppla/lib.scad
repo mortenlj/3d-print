@@ -1,9 +1,8 @@
 // Control
-preview = false;
 testing = false;
 
-$fs = preview ? 1 : 0.05;
-$fa = preview ? 1 : 0.2;
+$fs = $preview ? 1 : 0.05;
+$fa = $preview ? 1 : 0.2;
 
 wall = 2;
 dupont = 2.54;
