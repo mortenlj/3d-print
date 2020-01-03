@@ -34,6 +34,15 @@ difference() {
                     cylinder(h=case_height, r=1.5, center=true);
             }
         }
+        // Wire guides
+        for(x=[-1.5 : 1 : 1.5]) {
+            translate([x*dupont, -carriage_length/3, -(koppla_diameter-1.3)/2])
+                cube([1.5, carriage_length, 1.5], center=true);
+        }
+        for(x=[0 : -dupont : -wemos_length]) {
+            translate([0, x+h_buffer_lid, -(koppla_diameter-1.3)/2])
+                cube([wemos_width, 1.5, 1.5], center=true);
+        }
 }
 
 // Mounts
