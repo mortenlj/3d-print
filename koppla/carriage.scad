@@ -1,5 +1,8 @@
 include <lib.scad>
 
+include_mounts = false;
+
+rotation = include_mounts ? 90 : 0;
 carriage_length = case_height - h_overlap - lid_height;
 mount_height = 6;
 edge_width = 0.4;
@@ -20,7 +23,7 @@ difference() {
 
 // Carriage
 difference() {
-    rotate([90, 0, 0])
+    rotate([rotation, 0, 0])
         difference() {
             Block(koppla_width, carriage_length, koppla_diameter);
             intersection() {
@@ -34,43 +37,34 @@ difference() {
                     cylinder(h=case_height, r=1.5, center=true);
             }
         }
-        // Wire guides
-        for(x=[-1.5 : 1 : 1.5]) {
-            translate([x*dupont, -carriage_length/3, -(koppla_diameter-1.3)/2])
-                cube([1.5, carriage_length, 1.5], center=true);
-        }
-        for(x=[0 : -dupont : -wemos_length]) {
-            translate([0, x+h_buffer_lid, -(koppla_diameter-1.3)/2])
-                cube([wemos_width, 1.5, 1.5], center=true);
-        }
 }
 
-// Mounts
-end_mount_length = 2*wemos_width/3;
-side_mount_length = 2*wemos_length/3;
-board_width = wemos_width + edge_width/2;
+if (include_mounts) {
+    // Mounts
+    end_mount_length = 2*wemos_width/3;
+    side_mount_length = 2*wemos_length/3;
+    board_width = wemos_width + edge_width;
 
-translate([end_mount_length/2, -carriage_length/2+h_buffer_lid, -payload_diameter/2])
-    rotate([0, 0, 90])
-        Mount(end_mount_length);
-translate([-board_width/2-wall, -carriage_length/2+h_buffer_lid+side_mount_length/3, -payload_diameter/2])
-    Mount(side_mount_length);
-translate([board_width/2+wall, -carriage_length/2+h_buffer_lid+side_mount_length/3+side_mount_length, -payload_diameter/2])
-    rotate([0, 0, 180])
+    translate([end_mount_length/2, -carriage_length/2+h_buffer_lid, -payload_diameter/2])
+        rotate([0, 0, 90])
+            Mount(end_mount_length);
+    translate([-board_width/2-wall, -carriage_length/2+h_buffer_lid+side_mount_length/3, -payload_diameter/2])
         Mount(side_mount_length);
+    translate([board_width/2+wall, -carriage_length/2+h_buffer_lid+side_mount_length/3+side_mount_length, -payload_diameter/2])
+        rotate([0, 0, 180])
+            Mount(side_mount_length);
+}
 
 // Testing -->
     }
     if (testing) {
-        translate([0, 0, 15])
-            cube([koppla_width*2, carriage_length+10, koppla_diameter], center=true);
         translate([25, 0, 0])
             cube([20, carriage_length+10, koppla_diameter*2], center=true);
         translate([-25, 0, 0])
             cube([20, carriage_length+10, koppla_diameter*2], center=true);
         translate([0, carriage_length/2-3, 0])
-            cube([koppla_width*2, 20, koppla_diameter*2], center=true);
-        translate([0, -carriage_length/2, 0])
+            cube([koppla_width*2, 50, koppla_diameter*2], center=true);
+        translate([0, -carriage_length*0.7, 0])
             cube([koppla_width*2, 60, koppla_diameter*2], center=true);
     }
 }
