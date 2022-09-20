@@ -1,7 +1,7 @@
 $fs = $preview ? 1 : 0.05;
 $fa = $preview ? 1 : 0.05;
 
-m4_height = 187;
+m4_height = 192;
 width_approx = 93;
 height = 35;
 margin = 4;
