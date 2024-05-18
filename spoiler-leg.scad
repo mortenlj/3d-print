@@ -27,7 +27,7 @@ bottom = [for (
     ) [x_offset, y_offset, 0]];
 
 // top
-top_x_offset = 2.1;
+top_x_offset = 2.2;
 
 top_y_front_offset = 5;
 top_y_back_offset = 25;
