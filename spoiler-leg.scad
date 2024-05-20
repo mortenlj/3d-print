@@ -44,15 +44,26 @@ top = [for (
     y_offset = [top_y_front_offset:y_step:top_y_back_offset]
     ) [x_offset, y_offset, z_offset(y_offset)]];
 
+hook_adjust = 0.3;
+hook_x_step = 2*(top_x_offset+hook_adjust);
+hook = [for (
+    x_offset = [-1*(top_x_offset+hook_adjust):hook_x_step:1*(top_x_offset+hook_adjust)],
+    y_offset = [top_y_front_offset:y_step:top_y_back_offset]
+    ) [x_offset, y_offset, z_offset(y_offset)+1]];
+
 // Combine
-points = concat(bottom, top);
+points = concat(bottom, top, hook);
 leg_faces=[
     [2,3,1,0],
     [0,1,5,4],
-    [4,5,7,6],
     [1,3,7,5],
     [6,7,3,2],
-    [4,6,2,0]
+    [4,6,2,0],
+    [8,9,11,10],
+    [6,10,11,7],
+    [5,9,8,4],
+    [8,10,6,4],
+    [5,7,11,9]
 ];
 
 union() {
