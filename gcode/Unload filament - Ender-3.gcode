@@ -1,6 +1,5 @@
 M109 S215.000 ;Heat hotend to 215C for PLA
-G28 ; home all axes (X, Y, and Z)
-G1 Z100 F200 ; lift nozzle 100mm
+G0 Z100 F200 ; lift nozzle 100mm
 G21 ;Let the printer know you are following this point with metric values
 G91 ;Let the printer know you are using relative positioning
 M300 S880 P300 ; Play tone
