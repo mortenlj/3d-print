@@ -1,8 +1,7 @@
-G1 Z14.04 F600 ; Move print head up
-G1 X5 Y182.4 F9000 ; present print
-G1 Z82.04 F600 ; Move print head further up
-G1 Z150 F600 ; Move print head further up
-M140 S0 ; turn off heatbed
-M104 S0 ; turn off temperature
+M104 S0; Set Hot-end to 0C (off)
+M140 S0; Set bed to 0C (off)
 M107 ; turn off fan
+G90 ; absolute positioning
+G0 Z180 F1000 ; Move print head out of the way
+G0 X5 Y180 F5000 ; present print
 M84 X Y E ; disable motors

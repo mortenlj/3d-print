@@ -1,10 +1,7 @@
-M109 S215.000 ;Heat hotend to 215C for PLA
-G0 Z100 F200 ; lift nozzle 100mm
+M109 S215.000 ; Heat hotend to 215C for PLA
 G21 ;Let the printer know you are following this point with metric values
 G91 ;Let the printer know you are using relative positioning
-M300 S880 P300 ; Play tone
-M300 S660 P250 ; Play tone
-M300 S440 P200 ; Play tone
+G0 Z20 F200 ; lift nozzle 20mm
 G92 E0 ;Reset the position of the extruder
 G1 E10 F100 ; Extrude a short distance before unloading to avoid blob forming
 M400; Wait for command to finish
