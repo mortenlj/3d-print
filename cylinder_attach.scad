@@ -5,12 +5,14 @@ $fa = $preview ? 1 : 0.05;
 include <BOSL2/std.scad>;
 
 inner_radius = 20;
+gap = 0;
 scale = inner_radius;
 screw_diameter = 6;
 height = max(scale * 2, screw_diameter * 3);
 wall = 5;
 outer_radius = inner_radius + wall;
 attachment_length = max(scale * 1.5, screw_diameter * 3);
+attachment_separation = min(wall*2, outer_radius/2);
 
 // Copied from https://github.com/rcolyer/smooth-prim
 module HollowCylinder(outer_radius, inner_radius, height) {
@@ -39,9 +41,9 @@ module CylinderAttach() {
                 }
 
                 // attachment point
-                translate([wall*2, inner_radius + attachment_length/2, 0])
+                translate([attachment_separation, inner_radius + attachment_length/2, 0])
                     cube([wall, attachment_length, height], center=true);
-                translate([-wall*2, inner_radius + attachment_length/2, 0])
+                translate([-attachment_separation, inner_radius + attachment_length/2, 0])
                     cube([wall, attachment_length, height], center=true);
             }
 
@@ -52,4 +54,4 @@ module CylinderAttach() {
         }
 }
 
-partition(size=[outer_radius*4+attachment_length*2, outer_radius*4, height*2], spread=min(scale / 2, wall * 2), cutsize=wall/2, gap=0, cutpath="dovetail", spin=0.5, $slop=0.1) CylinderAttach();
+partition(size=[outer_radius*4+attachment_length*2, outer_radius*4, height*2], spread=min(scale / 2, wall * 2), cutsize=wall/2, gap=gap, cutpath="dovetail", spin=0.5, $slop=0.15) CylinderAttach();
