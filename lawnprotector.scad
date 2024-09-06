@@ -12,18 +12,20 @@ use <libraries/hex-grid.scad>;
 include <BOSL2/std.scad>;
 
 // The size of the pad
-pad_size = 210;
+pad_size = 200;
 pad_z = 5;
-mesh_size = 20;
-wall = 3;
+wall = 1;
+mesh_size = (pad_size / 10) - wall;
 
 // The size of the spikes
 spike_t = 3;
 spike_w = 12;
-spike_cross_z = 35;
+spike_cross_z = 45;
 spike_wedge_z = 15;
 
 create_grid([pad_size, pad_size, pad_z], mesh_size, wall);
+
+
 
 // Create the spikes
 grid_copies(size=pad_size-spike_w, n=2)
