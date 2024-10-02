@@ -44,7 +44,7 @@ module grid(size,cell_hole,cell_wall) {
   dx=cell_hole*sqrt(3)+cell_wall*sqrt(3);
   dy=cell_hole+cell_wall;
 
-  ycopies(spacing=dy,l=size[1])    
+  ycopies(spacing=dy,l=size[1])
     xcopies(spacing=dx,l=size[0]) {
       cell(SW_hole=cell_hole,
            height=size[2],
