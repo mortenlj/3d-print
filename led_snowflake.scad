@@ -18,30 +18,28 @@ leaf_angle = 30;
 stem_angle = 45;
 
 
-module Leaf(length, width, height) {
-    cube([length, width, height], anchor=LEFT+BOTTOM);
-    zrot(leaf_angle) cube([length, width, height], anchor=LEFT+BOTTOM);
-    zrot(-leaf_angle) cube([length, width, height], anchor=LEFT+BOTTOM);
+module Leaf(length, width, height, r) {
+    cuboid([length-r, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
+    xmove(-r/2) zrot(leaf_angle) cuboid([length+r/2, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
+    xmove(-r/2) zrot(-leaf_angle) cuboid([length+r/2, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
 }
 
-module Stem(length, width, height) {
-    cube([length, width, height], anchor=LEFT+BOTTOM);
-    xmove(length/2) Leaf(length/2, width, height);
+module Stalk(length, width, height, r) {
+    cuboid([2*(length+r)/3, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
 }
 
-module Stalk(length, width, height) {
-    cube([2*length/3, width, height], anchor=LEFT+BOTTOM);
-}
-
-module Branch(length, width, height) {
-    cube([length, width, height], anchor=LEFT+BOTTOM);
+module Branch(length, width, height, r) {
+    cuboid([length, width, height], rounding=r, except=[TOP, LEFT], anchor=LEFT+BOTTOM);
     stem_length = 2*length/3;
-    xmove(length/3) Stem(stem_length, width, height);
-    xmove(length/3) zrot(stem_angle) Stalk(stem_length, width, height);
-    xmove(length/3) zrot(-stem_angle) Stalk(stem_length, width, height);
+    xmove(2*length/3) Leaf(stem_length/2, width, height, r);
+    xmove((length-r)/3) zrot(stem_angle) Stalk(stem_length, width, height, r);
+    xmove((length-r)/3) zrot(-stem_angle) Stalk(stem_length, width, height, r);
 }
 
 difference() {
-    Branch(length+wall, led_width+wall*2, led_height+wall);
-    zmove(wall) Branch(length, led_width, (led_height+wall)*2);
+    Branch(length+wall, led_width+wall*2, led_height+wall, wall);
+    zmove(wall) union() {
+        Branch(length, led_width, (led_height+wall)*2, 0);
+        xmove(-led_width/2) cuboid([led_width, led_width, (led_height+wall)*2], anchor=LEFT+BOTTOM);
+    }
 }
