@@ -36,10 +36,21 @@ module Branch(length, width, height, w) {
     xmove((length-w)/3) zrot(-stem_angle) Stem(4*length/9, width, height, w);
 }
 
-difference() {
-    Branch(length+wall, led_width+wall*2, led_height+wall, wall);
-    zmove(wall) union() {
-        Branch(length, led_width, (led_height+wall)*2, 0);
-        xmove(-led_width/2) cuboid([led_width, led_width, (led_height+wall)*2], anchor=LEFT+BOTTOM);
+module Arm() {
+    xmove(2*center/3) difference() {
+        Branch(length+wall, led_width+wall*2, led_height+wall, wall);
+        zmove(wall) union() {
+            Branch(length, led_width, (led_height+wall)*2, 0);
+            xmove(-led_width/2) cuboid([led_width, led_width, (led_height+wall)*2], anchor=LEFT+BOTTOM);
+        }
     }
 }
+
+
+// Assemble star
+Arm();
+zrot(60) Arm();
+zrot(120) Arm();
+zrot(180) Arm();
+zrot(240) Arm();
+zrot(300) Arm();
