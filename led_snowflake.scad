@@ -24,7 +24,7 @@ module Stem(length, width, height, w) {
 }
 
 module Leaf(length, width, height, w) {
-    Stem(length+w/4, width, height, w);
+    Stem(5*length/4+w/4, width, height, w);
     xmove(-w/2) zrot(leaf_angle) Stem(length+w/2, width, height, w);
     xmove(-w/2) zrot(-leaf_angle) Stem(length+w/2, width, height, w);
 }
