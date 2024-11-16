@@ -8,10 +8,10 @@ $fa = $preview ? 1 : 0.05;
 include <BOSL2/std.scad>;
 
 led_width = 13;
-led_height = 3;
+led_height = 2;
 wall = 3;
 
-center = 40;
+center = 60;
 length = 150;
 
 leaf_angle = 30;
@@ -37,20 +37,26 @@ module Branch(length, width, height, w) {
 }
 
 module Arm() {
-    xmove(2*center/3) difference() {
-        Branch(length+wall, led_width+wall*2, led_height+wall, wall);
+    difference() {
+        union() {
+            Branch(length+wall, led_width+wall*2, led_height+wall, wall);
+            xmove(-center/2) pie_slice(r=wall+center/2, h=led_height+wall, ang=60, anchor=BOTTOM, spin=[0,0,-30]);
+        }
         zmove(wall) union() {
             Branch(length, led_width, (led_height+wall)*2, 0);
             xmove(-led_width/2) cuboid([led_width, led_width, (led_height+wall)*2], anchor=LEFT+BOTTOM);
         }
+        xmove(-center/2-wall) pie_slice(r=wall+center/2, h=10*led_height, ang=60, anchor=CENTER, spin=[0,0,-30]);
     }
 }
 
 
 // Assemble star
 Arm();
-zrot(60) Arm();
-zrot(120) Arm();
-zrot(180) Arm();
-zrot(240) Arm();
-zrot(300) Arm();
+
+
+//zrot(60) Arm();
+//zrot(120) Arm();
+//zrot(180) Arm();
+//zrot(240) Arm();
+//zrot(300) Arm();
