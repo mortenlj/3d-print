@@ -18,22 +18,22 @@ leaf_angle = 30;
 stem_angle = 45;
 
 
-module Leaf(length, width, height, r) {
-    cuboid([length-r, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
-    xmove(-r/2) zrot(leaf_angle) cuboid([length+r/2, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
-    xmove(-r/2) zrot(-leaf_angle) cuboid([length+r/2, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
+module Stem(length, width, height, w) {
+    cuboid([length, width, height], except=[TOP], anchor=LEFT+BOTTOM);
+    xmove(length-0.01) wedge([height, width/sqrt(2), width/sqrt(2)], anchor=LEFT+CENTER, orient=LEFT, spin=[45,0,0]);
 }
 
-module Stalk(length, width, height, r) {
-    cuboid([2*(length+r)/3, width, height], rounding=r, except=[TOP], anchor=LEFT+BOTTOM);
+module Leaf(length, width, height, w) {
+    Stem(length+w/4, width, height, w);
+    xmove(-w/2) zrot(leaf_angle) Stem(length+w/2, width, height, w);
+    xmove(-w/2) zrot(-leaf_angle) Stem(length+w/2, width, height, w);
 }
 
-module Branch(length, width, height, r) {
-    cuboid([length, width, height], rounding=r, except=[TOP, LEFT], anchor=LEFT+BOTTOM);
-    stem_length = 2*length/3;
-    xmove(2*length/3) Leaf(stem_length/2, width, height, r);
-    xmove((length-r)/3) zrot(stem_angle) Stalk(stem_length, width, height, r);
-    xmove((length-r)/3) zrot(-stem_angle) Stalk(stem_length, width, height, r);
+module Branch(length, width, height, w) {
+    cuboid([3*length/4, width, height], except=[TOP, LEFT], anchor=LEFT+BOTTOM);
+    xmove(2*length/3) Leaf(length/3-w/2, width, height, w);
+    xmove((length-w)/3) zrot(stem_angle) Stem(4*length/9, width, height, w);
+    xmove((length-w)/3) zrot(-stem_angle) Stem(4*length/9, width, height, w);
 }
 
 difference() {
