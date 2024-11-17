@@ -24,10 +24,30 @@ module Stem(length, width, height, w) {
     xmove(length-slop/10) wedge([height, width/sqrt(2), width/sqrt(2)], anchor=LEFT+CENTER, orient=LEFT, spin=[45,0,0]);
 }
 
+module Hook(width, height, diff) {
+    add = diff ? slop : 0;
+    union() {
+        cuboid([width, wall/2+add, height+slop*2], anchor=LEFT+BOTTOM);
+        move([0, -wall/4+slop, height-wall/4+slop*2]) wedge([width, wall/2, wall/2], anchor=LEFT+BOTTOM, spin=[90,0,0]);
+        move([0, -wall/4+slop, wall/6]) wedge([width, wall/3, wall/6], anchor=LEFT+BOTTOM, spin=[90,0,0]);
+    }
+}
+
+
 module Leaf(length, width, height, w) {
-    Stem(5*length/4+w/4, width, height, w);
-    xmove(-w/2) zrot(leaf_angle) Stem(length+w/2, width, height, w);
-    xmove(-w/2) zrot(-leaf_angle) Stem(length+w/2, width, height, w);
+    difference() {
+        union() {
+            Stem(5*length/4+w/4, width, height, w);
+            xmove(-w/2) zrot(leaf_angle) Stem(length+w/2, width, height, w);
+            xmove(-w/2) zrot(-leaf_angle) Stem(length+w/2, width, height, w);
+            if (w>0) {
+                move([length, width/2-wall/4, height-slop]) Hook(wall*2, wall+led_height, false);
+            }
+        }
+        if (w>0) {
+            move([length, -width/2+wall/4, height+slop]) xrot(180) Hook(wall*2+slop, wall+led_height, true);
+        }
+    }
 }
 
 module Branch(length, width, height, w) {
@@ -53,29 +73,29 @@ module Arm() {
 
 
 // Star arms
-%for (angle=[0:60:300]) {
-    zrot(angle)
+//%for (angle=[0:60:300]) {
+//    zrot(angle)
         Arm();
-}
+//}
 
 // Base
-difference() {
-    union() {
-        tube(ir=wall+center/2, or=2*wall+center/2, h=2*(2*led_height+2*wall), anchor=BOTTOM);
-        zcyl(r=2*wall+center/2, h=wall, anchor=BOTTOM);
-    }
-    for (angle=[0:60:300]) {
-        zrot(angle) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2+slop, (led_height+wall)*4], anchor=LEFT+BOTTOM);
-    }
-    zcyl(r=screw, h=10*wall, anchor=CENTER);
-    zrot(30) xmove(center/3) zcyl(r=3, h=10*wall, anchor=CENTER);
-}
-
-// Lid
-%ymove(length*2) difference() {
-    union() {
-        tube(or=3*wall+center/2, ir=2*wall+center/2+slop, h=2*(2*led_height+2*wall), anchor=BOTTOM);
-        zcyl(r=3*wall+center/2, h=wall, anchor=BOTTOM);
-    }
-    zcyl(r=screw, h=10*wall, anchor=CENTER);
-}
+//%difference() {
+//    union() {
+//        tube(ir=wall+center/2, or=2*wall+center/2, h=2*(2*led_height+2*wall), anchor=BOTTOM);
+//        zcyl(r=2*wall+center/2, h=wall, anchor=BOTTOM);
+//    }
+//    for (angle=[0:60:300]) {
+//        zrot(angle) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2+slop, (led_height+wall)*4], anchor=LEFT+BOTTOM);
+//    }
+//    zcyl(r=screw, h=10*wall, anchor=CENTER);
+//    zrot(30) xmove(center/3) zcyl(r=3, h=10*wall, anchor=CENTER);
+//}
+//
+//// Lid
+//%ymove(length*2) difference() {
+//    union() {
+//        tube(or=3*wall+center/2, ir=2*wall+center/2+slop, h=2*(2*led_height+2*wall), anchor=BOTTOM);
+//        zcyl(r=3*wall+center/2, h=wall, anchor=BOTTOM);
+//    }
+//    zcyl(r=screw, h=10*wall, anchor=CENTER);
+//}
