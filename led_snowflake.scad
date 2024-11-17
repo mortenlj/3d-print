@@ -6,7 +6,7 @@ $fs = $preview ? 1 : 0.05;
 $fa = $preview ? 1 : 0.05;
 
 include <BOSL2/std.scad>;
-
+slop=0.1;
 led_width = 13;
 led_height = 2;
 wall = 3;
@@ -21,7 +21,7 @@ stem_angle = 45;
 
 module Stem(length, width, height, w) {
     cuboid([length, width, height], anchor=LEFT+BOTTOM);
-    xmove(length-0.01) wedge([height, width/sqrt(2), width/sqrt(2)], anchor=LEFT+CENTER, orient=LEFT, spin=[45,0,0]);
+    xmove(length-slop/10) wedge([height, width/sqrt(2), width/sqrt(2)], anchor=LEFT+CENTER, orient=LEFT, spin=[45,0,0]);
 }
 
 module Leaf(length, width, height, w) {
@@ -53,13 +53,10 @@ module Arm() {
 
 
 // Star arms
-%Arm();
-%zrot(60) Arm();
-%zrot(120) Arm();
-%zrot(180) Arm();
-%zrot(240) Arm();
-%zrot(300) Arm();
-
+%for (angle=[0:60:300]) {
+    zrot(angle)
+        Arm();
+}
 
 // Base
 difference() {
@@ -67,12 +64,9 @@ difference() {
         tube(ir=wall+center/2, or=2*wall+center/2, h=2*(2*led_height+2*wall), anchor=BOTTOM);
         zcyl(r=2*wall+center/2, h=wall, anchor=BOTTOM);
     }
-    move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2, (led_height+wall)*3], anchor=LEFT+BOTTOM);
-    zrot(60) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2, (led_height+wall)*3], anchor=LEFT+BOTTOM);
-    zrot(120) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2, (led_height+wall)*3], anchor=LEFT+BOTTOM);
-    zrot(180) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2, (led_height+wall)*3], anchor=LEFT+BOTTOM);
-    zrot(240) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2, (led_height+wall)*3], anchor=LEFT+BOTTOM);
-    zrot(300) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2, (led_height+wall)*3], anchor=LEFT+BOTTOM);
+    for (angle=[0:60:300]) {
+        zrot(angle) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2+slop, (led_height+wall)*4], anchor=LEFT+BOTTOM);
+    }
     zcyl(r=screw, h=10*wall, anchor=CENTER);
     zrot(30) xmove(center/3) zcyl(r=3, h=10*wall, anchor=CENTER);
 }
@@ -80,7 +74,7 @@ difference() {
 // Lid
 %ymove(length*2) difference() {
     union() {
-        tube(or=3*wall+center/2, ir=2*wall+center/2, h=2*(2*led_height+2*wall), anchor=BOTTOM);
+        tube(or=3*wall+center/2, ir=2*wall+center/2+slop, h=2*(2*led_height+2*wall), anchor=BOTTOM);
         zcyl(r=3*wall+center/2, h=wall, anchor=BOTTOM);
     }
     zcyl(r=screw, h=10*wall, anchor=CENTER);
