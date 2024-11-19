@@ -25,11 +25,12 @@ module Stem(length, width, height, w) {
 }
 
 module Hook(width, height, diff) {
-    add = diff ? slop : 0;
+    add = diff ? 0 : 0;
+    s = diff ? 1.1 : 1;
     union() {
-        cuboid([width, wall/2+add, height+slop*2], anchor=LEFT+BOTTOM);
-        move([0, -wall/4+slop, height-wall/4+slop*2]) wedge([width, wall/2, wall/2], anchor=LEFT+BOTTOM, spin=[90,0,0]);
-        move([0, -wall/4+slop, wall/6]) wedge([width, wall/3, wall/6], anchor=LEFT+BOTTOM, spin=[90,0,0]);
+        scale(s) cuboid([width, wall/2+add, height+slop*2], anchor=CENTER+BOTTOM);
+        move([0, -wall/4+slop/10, height-wall/4+slop*2]) scale(s) wedge([width, wall/2, wall/4], anchor=CENTER+BOTTOM, spin=[90,0,0]);
+        move([0, -wall/4+slop/10, wall/6]) scale(s) wedge([width, wall/2, wall/4], anchor=CENTER+BOTTOM, spin=[90,0,0]);
     }
 }
 
@@ -45,7 +46,7 @@ module Leaf(length, width, height, w) {
             }
         }
         if (w>0) {
-            move([length, -width/2+wall/4, height+slop]) xrot(180) Hook(wall*2+slop, wall+led_height, true);
+            move([length, -width/2+wall/4, height+slop]) xrot(180) Hook(wall*2, wall+led_height, true);
         }
     }
 }
@@ -75,7 +76,11 @@ module Arm() {
 // Star arms
 //%for (angle=[0:60:300]) {
 //    zrot(angle)
-        Arm();
+
+intersection() {
+    xmove(190) cuboid([37, 25, 30]);
+    Arm();
+}
 //}
 
 // Base
