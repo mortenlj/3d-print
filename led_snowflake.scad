@@ -19,7 +19,7 @@ leaf_angle = 30;
 stem_angle = 45;
 
 
-module Stem(length, width, height, w) {
+module Stem(length, width, height) {
     cuboid([length, width, height], anchor=LEFT+BOTTOM);
     xmove(length-slop/10) wedge([height, width/sqrt(2), width/sqrt(2)], anchor=LEFT+CENTER, orient=LEFT, spin=[45,0,0]);
 }
@@ -35,27 +35,27 @@ module Hook(width, height, diff) {
 }
 
 
-module Leaf(length, width, height, w) {
+module Leaf(length, width, height, x_adjust) {
     difference() {
         union() {
-            Stem(5*length/4+w/4, width, height, w);
-            xmove(-w/2) zrot(leaf_angle) Stem(length+w/2, width, height, w);
-            xmove(-w/2) zrot(-leaf_angle) Stem(length+w/2, width, height, w);
-            if (w>0) {
+            Stem(5*length/4, width, height);
+            xmove(-x_adjust/2) zrot(leaf_angle) Stem(length+x_adjust/2, width, height);
+            xmove(-x_adjust/2) zrot(-leaf_angle) Stem(length+x_adjust/2, width, height);
+            if (x_adjust>0) {
                 move([length, width/2-wall/4, height-slop]) Hook(wall*2, wall+led_height, false);
             }
         }
-        if (w>0) {
+        if (x_adjust>0) {
             move([length, -width/2+wall/4, height+slop]) xrot(180) Hook(wall*2, wall+led_height, true);
         }
     }
 }
 
-module Branch(length, width, height, w) {
+module Branch(length, width, height, x_adjust) {
     cuboid([3*length/4, width, height], anchor=LEFT+BOTTOM);
-    xmove(2*length/3) Leaf(length/3-w/2, width, height, w);
-    xmove((length-w)/3) zrot(stem_angle) Stem(4*length/9, width, height, w);
-    xmove((length-w)/3) zrot(-stem_angle) Stem(4*length/9, width, height, w);
+    xmove(2*length/3) Leaf(length/3-x_adjust/2, width, height, x_adjust);
+    xmove((length-x_adjust)/3) zrot(stem_angle) Stem(4*length/9, width, height);
+    xmove((length-x_adjust)/3) zrot(-stem_angle) Stem(4*length/9, width, height);
 }
 
 module Arm() {
@@ -77,10 +77,10 @@ module Arm() {
 //%for (angle=[0:60:300]) {
 //    zrot(angle)
 
-intersection() {
-    xmove(190) cuboid([37, 25, 30]);
+//intersection() {
+//    xmove(190) cuboid([37, 25, 30]);
     Arm();
-}
+//}
 //}
 
 // Base
