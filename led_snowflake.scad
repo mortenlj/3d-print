@@ -6,6 +6,7 @@ $fs = $preview ? 1 : 0.05;
 $fa = $preview ? 1 : 0.05;
 
 include <BOSL2/std.scad>;
+
 slop=0.1;
 led_width = 13;
 led_height = 2;
@@ -35,37 +36,39 @@ module Hook(width, height, diff) {
 }
 
 
-module Leaf(length, width, height, x_adjust) {
+module Leaf(length, width, height, x_adjust, has_hook) {
     difference() {
         union() {
             Stem(5*length/4, width, height);
             xmove(-x_adjust/2) zrot(leaf_angle) Stem(length+x_adjust/2, width, height);
             xmove(-x_adjust/2) zrot(-leaf_angle) Stem(length+x_adjust/2, width, height);
-            if (x_adjust>0) {
+            if (x_adjust>0 && has_hook) {
                 move([length, width/2-wall/4, height-slop]) Hook(wall*2, wall+led_height, false);
+                move([length, -width/2+wall/4, height-slop]) zrot(180) Hook(wall*2, wall+led_height, false);
             }
         }
-        if (x_adjust>0) {
+        if (x_adjust>0 && !has_hook) {
+            move([length, width/2-wall/4, height+slop]) xrot(180) zrot(180) Hook(wall*2, wall+led_height, true);
             move([length, -width/2+wall/4, height+slop]) xrot(180) Hook(wall*2, wall+led_height, true);
         }
     }
 }
 
-module Branch(length, width, height, x_adjust) {
+module Branch(length, width, height, x_adjust, has_hook) {
     cuboid([3*length/4, width, height], anchor=LEFT+BOTTOM);
-    xmove(2*length/3) Leaf(length/3-x_adjust/2, width, height, x_adjust);
+    xmove(2*length/3) Leaf(length/3-x_adjust/2, width, height, x_adjust, has_hook);
     xmove((length-x_adjust)/3) zrot(stem_angle) Stem(4*length/9, width, height);
     xmove((length-x_adjust)/3) zrot(-stem_angle) Stem(4*length/9, width, height);
 }
 
-module Arm() {
+module Arm(has_hook) {
     move([center/2, 0, led_height+wall]) difference() {
         union() {
-            Branch(length+wall, led_width+wall*2, led_height+wall, wall);
+            Branch(length+wall, led_width+wall*2, led_height+wall, wall, has_hook);
             xmove(-center/2) pie_slice(r=wall+center/2, h=led_height+wall, ang=60, anchor=BOTTOM, spin=[0,0,-30]);
         }
         zmove(wall) union() {
-            Branch(length, led_width, (led_height+wall)*2, 0);
+            Branch(length, led_width, (led_height+wall)*2, 0, false);
             xmove(-led_width/2) cuboid([led_width, led_width, (led_height+wall)*2], anchor=LEFT+BOTTOM);
         }
         xmove(-center/2-wall) pie_slice(r=wall+center/2, h=10*led_height, ang=60, anchor=CENTER, spin=[0,0,-30]);
@@ -77,10 +80,10 @@ module Arm() {
 //%for (angle=[0:60:300]) {
 //    zrot(angle)
 
-//intersection() {
-//    xmove(190) cuboid([37, 25, 30]);
-    Arm();
-//}
+intersection() {
+    xmove(190) cuboid([37, 25, 30]);
+    Arm(true);
+}
 //}
 
 // Base
