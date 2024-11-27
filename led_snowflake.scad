@@ -77,33 +77,29 @@ module Arm(has_hook) {
 
 
 // Star arms
-//%for (angle=[0:60:300]) {
-//    zrot(angle)
-
-intersection() {
-    xmove(190) cuboid([37, 25, 30]);
-    Arm(true);
+for (angle=[0:60:300]) {
+    zrot(angle)
+    Arm(false);
 }
-//}
 
 // Base
-//%difference() {
-//    union() {
-//        tube(ir=wall+center/2, or=2*wall+center/2, h=2*(2*led_height+2*wall), anchor=BOTTOM);
-//        zcyl(r=2*wall+center/2, h=wall, anchor=BOTTOM);
-//    }
-//    for (angle=[0:60:300]) {
-//        zrot(angle) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2+slop, (led_height+wall)*4], anchor=LEFT+BOTTOM);
-//    }
-//    zcyl(r=screw, h=10*wall, anchor=CENTER);
-//    zrot(30) xmove(center/3) zcyl(r=3, h=10*wall, anchor=CENTER);
-//}
-//
-//// Lid
-//%ymove(length*2) difference() {
-//    union() {
-//        tube(or=3*wall+center/2, ir=2*wall+center/2+slop, h=2*(2*led_height+2*wall), anchor=BOTTOM);
-//        zcyl(r=3*wall+center/2, h=wall, anchor=BOTTOM);
-//    }
-//    zcyl(r=screw, h=10*wall, anchor=CENTER);
-//}
+difference() {
+    union() {
+        tube(ir=wall+center/2, or=2*wall+center/2, h=2*(2*led_height+2*wall), anchor=BOTTOM);
+        zcyl(r=2*wall+center/2, h=wall, anchor=BOTTOM);
+    }
+    for (angle=[0:60:300]) {
+        zrot(angle) move([center/2-wall,0,led_height+wall]) cuboid([led_width, led_width+wall*2+slop, (led_height+wall)*4], anchor=LEFT+BOTTOM);
+    }
+    zcyl(r=screw, h=10*wall, anchor=CENTER);
+    zrot(30) xmove(center/3) zcyl(r=3, h=10*wall, anchor=CENTER);
+}
+
+// Lid
+ymove(length*2) difference() {
+    union() {
+        tube(or=3*wall+center/2, ir=2*wall+center/2+slop, h=2*(2*led_height+2*wall), anchor=BOTTOM);
+        zcyl(r=3*wall+center/2, h=wall, anchor=BOTTOM);
+    }
+    zcyl(r=screw, h=10*wall, anchor=CENTER);
+}
