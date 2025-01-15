@@ -17,4 +17,4 @@ Articulated arm
 
 https://www.printables.com/model/801345-articulated-arm
 
-* gopro_like_joint_straight_short.stl
+* gopro_like_joint_twist_90_2_part.stl
