@@ -18,3 +18,11 @@ Articulated arm
 https://www.printables.com/model/801345-articulated-arm
 
 * gopro_like_joint_twist_90_2_part.stl
+
+
+Makita charger wall mount
+-------------------------
+
+https://www.printables.com/model/1136952-makita-charger-wall-mount-easy-removable
+
+* makita-mount-on-charger.stl
