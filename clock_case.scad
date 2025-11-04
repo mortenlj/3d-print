@@ -10,6 +10,7 @@ slop = 0.02;
 
 cable_thickness = 5;
 wall = 4;
+lip = 3;
 
 rail = 2;
 rail_depression = 12;
@@ -37,10 +38,10 @@ difference() {
                 cube([inner_x+slop, inner_y+slop, inner_z+slop]);
 
             // Carve out opening for power cable
-            translate([outer_x/2, wall*1.5, outer_z-cable_thickness/2])
+            translate([2*outer_x/3, wall*1.5, outer_z-cable_thickness/2])
                 rotate([90,0,0])
                     cylinder(h = 2 * wall, d = cable_thickness);
-            translate([outer_x/2-cable_thickness/2, -wall/2, outer_z-cable_thickness/2])
+            translate([2*outer_x/3-cable_thickness/2, -wall/2, outer_z-cable_thickness/2])
                 cube([cable_thickness, 2*wall, cable_thickness]);
         }
 
