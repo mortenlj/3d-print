@@ -38,34 +38,34 @@ difference() {
                 cube([inner_x+slop, inner_y+slop, inner_z+slop]);
 
             // Carve out opening for power cable
-            translate([2*outer_x/3, wall*1.5, outer_z-cable_thickness/2])
+            translate([2*outer_x/3, wall*1.5, outer_z-cable_thickness/2-lip])
                 rotate([90,0,0])
                     cylinder(h = 2 * wall, d = cable_thickness);
-            translate([2*outer_x/3-cable_thickness/2, -wall/2, outer_z-cable_thickness/2])
-                cube([cable_thickness, 2*wall, cable_thickness]);
+            translate([2*outer_x/3-cable_thickness/2, -wall/2, outer_z-cable_thickness/2-lip])
+                cube([cable_thickness, 2*wall, cable_thickness+lip]);
         }
 
         // Rails to keep matrix board in place
         //   Right side
         translate([outer_x-wall-rail+slop*2, outer_y-rail_depression-rail, slop])
-            cube([rail, rail, outer_z-slop*2]);
+            cube([rail, rail, outer_z-lip-slop*2]);
         translate([outer_x-wall-rail+slop*2, outer_y-rail_depression-rail*3, slop])
-            cube([rail, rail, outer_z-slop*2]);
+            cube([rail, rail, outer_z-lip-slop*2]);
         //   Left side
         translate([wall-slop*2, outer_y-rail_depression-rail, slop])
-            cube([rail, rail, outer_z-slop*2]);
+            cube([rail, rail, outer_z-lip-slop*2]);
         translate([wall-slop*2, outer_y-rail_depression-rail*3, slop])
-            cube([rail, rail, outer_z-slop*2]);
+            cube([rail, rail, outer_z-lip-slop*2]);
 
         // Nut anchors
-        translate([wall-slop, wall-slop, outer_z-anchor_depth])
+        translate([wall-slop, wall-slop, outer_z-anchor_depth-lip])
             pie_slice(h = anchor_depth, d = anchor, ang=90);
-        translate([wall-slop, wall-slop, outer_z-anchor_depth-anchor/2])
+        translate([wall-slop, wall-slop, outer_z-anchor_depth-anchor/2-lip])
             pie_slice(h = anchor/2, r1 = slop, r2 = anchor/2, ang=90);
 
-        translate([wall+inner_x+2*slop, wall-slop, outer_z-anchor_depth])
+        translate([wall+inner_x+2*slop, wall-slop, outer_z-anchor_depth-lip])
             pie_slice(h = anchor_depth, d = anchor, ang=90, spin=90);
-        translate([wall+inner_x+2*slop, wall-slop, outer_z-anchor_depth-anchor/2])
+        translate([wall+inner_x+2*slop, wall-slop, outer_z-anchor_depth-anchor/2-lip])
             pie_slice(h = anchor/2, r1 = slop, r2 = anchor/2, ang=90, spin=90);
     }
 
